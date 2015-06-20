@@ -1,0 +1,3 @@
+normal_name = "Deborah".length
+take = gets.chomp
+new_name = take.reverse
