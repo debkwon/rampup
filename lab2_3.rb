@@ -3,16 +3,21 @@ def talk_granny
 	rand_year = rand(1930..1980)
 	goodbye = 0
 
-	while goodbye <=3 
+	while goodbye <3 
 		words = gets.chomp
 		
-		if words == "BYE" && goodbye <2
-		goodbye+=1
-		puts "ARE YOU SURE YOU WANT TO GO NOW? I DON'T TALK TO YOU AS MUCH ANYMORE."
-		elsif goodbye == 2
-		puts "FOINE. GO HOME, THEN. BUT TAKE THESE CONTAINER OF COOKIES WITH YOU. AND ALSO THIS POT OF SOUP.
-		AND ALSO THESE LEFTOVERS."
-		break
+		if words == "BYE"
+			goodbye += 1
+				if goodbye < 2
+					puts "ARE YOU SURE YOU WANT TO GO NOW? I DON'T TALK TO YOU AS MUCH ANYMORE."
+				elsif goodbye == 3
+					puts "BYE!!"
+
+				end
+		#elsif goodbye == 3
+		# puts "FOINE. GO HOME, THEN. BUT TAKE THESE CONTAINER OF COOKIES WITH YOU. AND ALSO THIS POT OF SOUP.
+		# AND ALSO THESE LEFTOVERS."
+		# break
 		elsif words != words.upcase || words.empty?
 			puts "HUH?! SPEAK UP, SONNY!"
 			goodbye = 0
