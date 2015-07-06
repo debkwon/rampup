@@ -58,7 +58,6 @@ class Blackjack
 
 		def play_game
 			puts "Place your bets!"
-			#alternative could potentially be to replace bet_amount with @bet_amount below
 			@bet_amount = gets.chomp.to_i
 			deal_hands
 			puts "You have #{player.total_points} and the dealer's top card is #{dealer.hand[0]}"
