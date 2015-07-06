@@ -1,7 +1,7 @@
 #This one has bet_amount as a global variable set in Blackjack.play_game
 
 class Player
-  attr_accessor :name, :hand, :bankroll #:bet_amount
+  attr_accessor :name, :hand, :bankroll
 	def initialize 
 		puts "What is your name?"
 		@name = gets.chomp.capitalize
@@ -33,6 +33,8 @@ class Blackjack
 			@player = Player.new
 			@dealer = Dealer.new
 			while player.bankroll > 0
+				player.hand = []
+				dealer.hand = []
 				play_game
 			end
 		end
