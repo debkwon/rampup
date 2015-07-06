@@ -31,7 +31,9 @@ class Blackjack
 		def initialize
 			@player = Player.new
 			@dealer = Dealer.new
-			play_game
+			while player.bankroll > 0
+				play_game
+			end
 		end
 
 		def deck_of_card
@@ -55,7 +57,7 @@ class Blackjack
 
 		def play_game
 			puts "Place your bets!"
-			#alternative could potentially be to replace bet_amount with @bet_amount
+			#alternative could potentially be to replace bet_amount with @bet_amount below
 			bet_amount = gets.chomp.to_i
 			deal_hands
 			puts "You have #{player.total_points} and the dealer's top card is #{dealer.hand[0]}"

@@ -32,7 +32,9 @@ class Blackjack
 		def initialize
 			@player = Player.new
 			@dealer = Dealer.new
-			play_game
+			while player.bankroll > 0
+				play_game
+			end
 		end
 
 		def deck_of_card
