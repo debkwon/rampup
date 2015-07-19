@@ -287,6 +287,7 @@ def take_a_guess
       end
 
     end  
+    
 def plural_check(guess_count)
   if guess_count == 1
     "chance"
