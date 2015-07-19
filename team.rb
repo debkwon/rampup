@@ -10,14 +10,21 @@ class Team
 			:Snorlax => 0
 		}
 	end
-	
+
 	def add_team(name)
 		current_teams[name.to_sym] = 0
 	end
 
 	def sort_teams 
-		sorted = current_teams.sort_by(&:last).reverse
-		puts sorted
+		#sorted = current_teams.sort_by(&:last).reverse
+		#alpha_sort = Hash[current_teams.sort]
+
+		#sorted = current_teams.sort do |x, y|
+		#x.last == y.last ? x.first <=> y.first : y.last <=> x.last
+		sorted = current_teams.sort do |a, b| a.last == b.last ? a.first <=> b.first : b.last <=> a.last
+		end
+		sorted.each { |team, score| puts "#{team} #{score}"}
+		
 	end
 end
 
