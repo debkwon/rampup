@@ -4,7 +4,7 @@ class LPC
 	attr_accessor :team, :team_list
 	def initialize
 		@team = Team.new
-		@team_list = @team.current_teams
+		@team_list = @team.current_teams #create new instances of each team, not calling on a list of teams 
 		ask_user 
 	end
 
@@ -17,20 +17,20 @@ class LPC
 	end
 
 	def lpc_options(user_choice)
-				if user_choice == 1
-				puts "Enter the scores in this format: Yankees 5 Mets 4 (no commas, please)."
-				entered_scores = gets.chomp.downcase
-				teams_check(entered_scores)
-				end
+		if user_choice == 1
+			puts "Enter the scores in this format: Yankees 5 Mets 4 (no commas, please)."
+			entered_scores = gets.chomp.downcase
+			teams_check(entered_scores)
+		end
 
-				if user_choice == 2
-				puts "Here's the current ranking:"
-				display_ranking
-				end
+		if user_choice == 2
+			puts "Here's the current ranking:"				
+			display_ranking
+		end
 
-				if user_choice == 3
-					puts "Thought so."
-				end
+		if user_choice == 3
+			puts "Thought so."
+		end
 	end
 
 	def teams_check(entered_scores)
@@ -49,7 +49,7 @@ class LPC
 			end
 
 			if first_score > second_score
-				x = team_list[first_team.capitalize.to_sym]
+				x = team_list[first_team.capitalize.to_sym] #remove next two lines, change to += 3
 				x += 3
 				team_list[first_team.capitalize.to_sym] = x
 			end
@@ -75,7 +75,6 @@ class LPC
 	def display_ranking
 		team.sort_teams
 	end
-
 
 LPC.new
 

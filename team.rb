@@ -28,3 +28,12 @@ class Team
 	end
 end
 
+#refactor this to make instances of teams
+=begin
+class Team
+	attr_accessor :team_name, :score
+	def initialize(team_name, score = 0)
+		@team_name = team_name
+		@score = score
+	
+=ed
