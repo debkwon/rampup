@@ -5,5 +5,6 @@ class Diner
 		@bill_amt = []
 		@tax_amount = []
 	end
+	
 	def name
 end

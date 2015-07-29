@@ -1,7 +1,6 @@
 require 'httparty'
 
-class Name_gen
-  attr_accessor :count
+class Name
   def initialize
     print "\n"
     puts "-----------------------------------------------------------"
@@ -41,52 +40,36 @@ class Name_gen
       Enter [1] for: Boy names
       Enter [2] for: Girl names
       Enter [3] for: Ethnicity
-      Enter [4] for: Top Ranking names (regardless of gender or ethnicity)
-      Enter [5] for menu"
+      Enter [4] for: Top Ranking names (regardless of gender or ethnicity)"
     print "\n"
 
     rank_picks = gets.chomp.to_i
-      case rank_picks
+        case rank_picks
         when 1
-          b_rank
+          rank("male")
         when 2
-          g_rank
+          rank("female")
         when 3
-          ethcty_rank
+          ethcty
         when 4
           number_one
-        when 5
-          ask_user
       end
   end
 
-  def b_rank
-    response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?gndr=MALE")
+  def rank(gender_choice)
+    response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?gndr=#{gender_choice}")
     parsed_response = JSON.parse(response.body)
     result = parsed_response.sort_by! { |entry| entry["rnk"]}
     print "\n"
-    puts "Here's the list (top of the list starts from most popular):"
-    puts "-----------------------------------------------------------------"
+    puts "Here's the list of top #{gender_choice} names (starting with most popular):"
+    puts "---------------------------------------------------------------------------"
     names = result.map { |entry| (entry["nm"].capitalize) }
     u = names.uniq
     puts u
-    puts "-----------------------------------------------------------------"
-  end
-
-  def g_rank 
-    response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?gndr=FEMALE")
-    parsed_response = JSON.parse(response.body)
-    result = parsed_response.sort_by! { |entry| entry["rnk"]}
-    print "\n"
-    puts "Here's the list (top of the list starts from most popular):"
-    puts "-----------------------------------------------------------------"
-    names = result.map { |entry| (entry["nm"].capitalize) }
-    u = names.uniq
-    puts u
-    puts "-----------------------------------------------------------------"
+    puts "---------------------------------------------------------------------------"
   end
  
-  def ethcty_rank
+  def ethcty
     print "\n"
     puts "Choose one of the following options:
       Enter [A] for Asian and Pacific Islander
@@ -98,50 +81,27 @@ class Name_gen
     print "\n"
       case eth_choice
         when "a"
-          response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?ethcty=ASIAN%20AND%20PACIFIC%20ISLANDER")
-          parsed_response = JSON.parse(response.body)
-          result = parsed_response.sort_by! { |entry| entry["rnk"]}
-          print "\n"
-          puts "Here's the list (top of the list starts from most popular):"
-          puts "-----------------------------------------------------------------"
-          names = result.map { |entry| (entry["nm"].capitalize) }
-          u = names.uniq
-          puts u
-          puts "-----------------------------------------------------------------"
+          ethcty_rank("ASIAN%20AND%20PACIFIC%20ISLANDER")
         when "b"
-          response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?ethcty=BLACK%20NON%20HISPANIC")
-          parsed_response = JSON.parse(response.body)
-          result = parsed_response.sort_by! { |entry| entry["rnk"]}
-          print "\n"
-          puts "Here's the list (top of the list starts from most popular):"
-          puts "-----------------------------------------------------------------"
-          names = result.map { |entry| (entry["nm"].capitalize) }
-          u = names.uniq
-          puts u
-          puts "-----------------------------------------------------------------"
+          ethcty_rank("BLACK%20NON%20HISPANIC")
         when "c"
-          response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?ethcty=HISPANIC")
-          parsed_response = JSON.parse(response.body)
-          result = parsed_response.sort_by! { |entry| entry["rnk"]}
-          print "\n" 
-          puts "Here's the list (top of the list starts from most popular):"
-          puts "-----------------------------------------------------------------"
-          names = result.map { |entry| (entry["nm"].capitalize) }
-          u = names.uniq
-          puts u
-          puts "-----------------------------------------------------------------"
+          ethcty_rank("HISPANIC")
         when "d"
-          response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?ethcty=WHITE%20NON%20HISPANIC")
-          parsed_response = JSON.parse(response.body)
-          result = parsed_response.sort_by! { |entry| entry["rnk"]}
-          print "\n"
-          puts "Here's the list (top of the list starts from most popular):"
-          puts "-----------------------------------------------------------------"
-          names = result.map { |entry| (entry["nm"].capitalize) }
-          u = names.uniq
-          puts u
-          puts "-----------------------------------------------------------------"
+          ethcty_rank("WHITE%20NON%20HISPANIC")
       end
+  end
+  
+  def ethcty_rank(ethnicity)
+    response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?ethcty=#{ethnicity}")
+    parsed_response = JSON.parse(response.body)
+    result = parsed_response.sort_by! { |entry| entry["rnk"]}
+    print "\n"
+    puts "Here's the list (top of the list starts from most popular):"
+    puts "-----------------------------------------------------------------"
+    names = result.map { |entry| (entry["nm"].capitalize) }
+    u = names.uniq
+    puts u
+    puts "-----------------------------------------------------------------"
   end
 
   def number_one
@@ -162,9 +122,8 @@ class Name_gen
   def name_lookup
     while true do
       print "\n"
-      puts "Enter name to see how popular a name is in NYC. Type 'menu' if you want to go back"
+      puts "Enter name to see how popular a name is in NYC."
       name_search = gets.chomp
-      ask_user if name_search == "menu"
       response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?nm=#{name_search}")
       parsed_response = JSON.parse(response.body)
       result = parsed_response.sort_by! { |entry| entry["rnk"]}
@@ -194,9 +153,9 @@ class Name_gen
     mixing_type = gets.chomp.to_i
       case mixing_type
         when 1
-          g_mix
+          mixer("FEMALE")
         when 2
-          b_mix
+          mixer("MALE")
         when 3
           name_any
         when 4
@@ -204,9 +163,9 @@ class Name_gen
       end
   end
 
-  def g_mix
+  def mixer(gender)
     while true do
-      response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?gndr=FEMALE")
+      response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?gndr=#{gender}")
       parsed_response = JSON.parse(response.body)
       x = parsed_response.map { |entry| entry["nm"] }
       name_1 = x.shuffle.last
@@ -216,7 +175,7 @@ class Name_gen
       slice_amt = (combined_names.length)/3
       slice_amt.times { combined_names.slice!(slice_amt) }
       print "\n"
-      puts "We came up with the best baby girl name for you:
+      puts "We came up with the best baby name for you:
         #{combined_names}!"
       print "\n"
       puts "Could I make an EVEN better name for you? (y or n)"
@@ -225,31 +184,6 @@ class Name_gen
           print "\n"
           puts "Glad you really liked #{combined_names}!"
         return false if answer == "n" 
-        end
-    end
-  end
-
-  def b_mix
-    while true do
-      response = HTTParty.get("https://data.cityofnewyork.us/resource/25th-nujf.json?gndr=MALE")
-      parsed_response = JSON.parse(response.body)
-      x = parsed_response.map { |entry| entry["nm"] }
-      name_1 = x.shuffle.last
-      name_2 = x.shuffle.first
-      combined_names = name_1 + name_2
-      combined_names.split("")
-      slice_amt = (combined_names.length)/3
-      slice_amt.times { combined_names.slice!(slice_amt) }
-      print "\n"
-      puts "We came up with the best baby boy name for you:
-        #{combined_names}!"
-      print "\n"
-      puts "Could I make an EVEN better name for you? (y or n)"
-      answer = gets.chomp.downcase
-        if answer == "n"
-          print "\n"
-          puts "Glad you really liked #{combined_names}!"
-          return false if answer == "n" 
         end
     end
   end
@@ -328,4 +262,4 @@ class Name_gen
 
 end
 
-Name_gen.new
+Name.new
